@@ -17,7 +17,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: broker-config
-  namespace: default
+  namespace: db
 data:
   # BROKER_MEM sets the broker JVM, if set to "" then Xms = Xmx = max(min(1/2 ram, 1024MB), min(1/4 ram, 8GB))
   BROKER_MEM: " -Xms2g -Xmx2g -Xmn1g "
@@ -35,7 +35,7 @@ kind: Broker
 metadata:
   # name of broker cluster
   name: broker
-  namespace: default
+  namespace: db
 spec:
   # size is the number of the broker cluster, each broker cluster contains a master broker and [replicaPerGroup] replica brokers.
   size: 1
@@ -94,14 +94,16 @@ apiVersion: rocketmq.apache.org/v1alpha1
 kind: NameService
 metadata:
   name: name-service
-  namespace: default
+  namespace: db
 spec:
+  nodeSelector:
+    superapp.test.workflow/component: middleware
   # size is the the name service instance number of the name service cluster
   size: 1
   # nameServiceImage is the customized docker image repo of the RocketMQ name service
   nameServiceImage: apacherocketmq/rocketmq-nameserver:4.5.0-alpine-operator-0.3.0
   # imagePullPolicy is the image pull policy
-  imagePullPolicy: Always
+  imagePullPolicy: IfNotPresent
   # hostNetwork can be true or false
   hostNetwork: true
   #  Set DNS policy for the pod.
@@ -120,30 +122,36 @@ spec:
       memory: "1024Mi"
       cpu: "500m"
   # storageMode can be EmptyDir, HostPath, StorageClass
-  storageMode: EmptyDir
+  storageMode: StorageClass
   # hostPath is the local path to store data
   hostPath: /data/rocketmq/nameserver
   # volumeClaimTemplates defines the storageClass
   volumeClaimTemplates:
     - metadata:
         name: namesrv-storage
+        annotations:
+          everest.io/disk-volume-type: SSD
+        labels:
+          failure-domain.beta.kubernetes.io/region: ae-ad-1
+          failure-domain.beta.kubernetes.io/zone: ae-ad-1c
       spec:
         accessModes:
           - ReadWriteOnce
-        storageClassName: rocketmq-storage
+        storageClassName: csi-disk
         resources:
           requests:
             storage: 1Gi
+
 
 ---
 apiVersion: rocketmq.apache.org/v1alpha1
 kind: Console
 metadata:
   name: console
-  namespace: default
+  namespace: db
 spec:
   # nameServers is the [ip:port] list of name service
-  nameServers: ""
+  nameServers: "10.24.1.164:9876;10.24.1.195:9876;10.24.1.13:9876"
   # consoleDeployment define the console deployment
   consoleDeployment:
     apiVersion: apps/v1

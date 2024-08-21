@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: console-config
+  namespace: db
 data:
   application.yml: |
     server:
@@ -56,10 +57,10 @@ apiVersion: rocketmq.apache.org/v1alpha1
 kind: Console
 metadata:
   name: console
-  namespace: default
+  namespace: db
 spec:
   # nameServers is the [ip:port] list of name service
-  nameServers: ""
+  nameServers: "10.24.1.164:9876;10.24.1.195:9876;10.24.1.13:9876"
   # consoleDeployment define the console deployment
   consoleDeployment:
     apiVersion: apps/v1
@@ -68,6 +69,8 @@ spec:
       labels:
         app: rocketmq-console
     spec:
+      nodeSelector:
+        superapp.test.workflow/component: middleware
       replicas: 1
       selector:
         matchLabels:

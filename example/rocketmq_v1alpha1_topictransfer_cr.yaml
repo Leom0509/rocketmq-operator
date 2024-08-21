@@ -17,6 +17,7 @@ apiVersion: rocketmq.apache.org/v1alpha1
 kind: TopicTransfer
 metadata:
   name: topictransfer
+  namespace: db
 spec:
   # topic defines which topic to be transferred
   topic: TopicTest

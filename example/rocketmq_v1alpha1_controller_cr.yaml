@@ -19,6 +19,7 @@ kind: Controller
 metadata:
   # name of controller cluster
   name: controller
+  namespace: db
 spec:
   # size is the number of controllers.
   size: 1
@@ -33,15 +34,25 @@ spec:
     limits:
       memory: "2Gi"
   # storageMode can be EmptyDir, HostPath, StorageClass
-  storageMode: HostPath
+  storageMode: StorageClass
   # hostPath is the local path to store data
   hostPath: /data/rocketmq/controller
   # volumeClaimTemplates defines the storageClass
   volumeClaimTemplates:
     - metadata:
         name: controller-storage
+        annotations:
+          everest.io/disk-volume-type: SSD
+        labels:
+          failure-domain.beta.kubernetes.io/region: ae-ad-1
+          failure-domain.beta.kubernetes.io/zone: ae-ad-1c
       spec:
-        accessModes: [ "ReadWriteOnce" ]
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: csi-disk
         resources:
           requests:
-            storage: 8Gi
+            storage: 10Gi
+
+
+

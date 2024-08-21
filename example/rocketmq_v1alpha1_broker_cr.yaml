@@ -17,6 +17,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: broker-config
+  namespace: db
 data:
   BROKER_MEM: " -Xms2g -Xmx2g -Xmn1g "
   broker-common.conf: |
@@ -33,17 +34,20 @@ kind: Broker
 metadata:
   # name of broker cluster
   name: broker
+  namespace: db
 spec:
+  nodeSelector:
+    superapp.test.workflow/component: middleware
   # size is the number of the broker cluster, each broker cluster contains a master broker and [replicaPerGroup] replica brokers.
   size: 1
   # nameServers is the [ip:port] list of name service
-  nameServers: ""
+  nameServers: "10.24.1.164:9876;10.24.1.195:9876;10.24.1.13:9876"
   # replicaPerGroup is the number of each broker cluster
   replicaPerGroup: 1
   # brokerImage is the customized docker image repo of the RocketMQ broker
   brokerImage: apacherocketmq/rocketmq-broker:4.5.0-alpine-operator-0.3.0
   # imagePullPolicy is the image pull policy
-  imagePullPolicy: Always
+  imagePullPolicy: IfNotPresent
   # resources describes the compute resource requirements and limits
   resources:
     requests:
@@ -55,7 +59,7 @@ spec:
   # allowRestart defines whether allow pod restart
   allowRestart: true
   # storageMode can be EmptyDir, HostPath, StorageClass
-  storageMode: HostPath
+  storageMode: StorageClass
   # hostPath is the local path to store data
   hostPath: /data/rocketmq/broker
   # scalePodName is [Broker name]-[broker group number]-master-0
@@ -80,9 +84,22 @@ spec:
     - metadata:
         name: broker-storage
         annotations:
-          volume.beta.kubernetes.io/storage-class: rocketmq-storage
+          everest.io/disk-volume-type: SSD
+        labels:
+          failure-domain.beta.kubernetes.io/region: ae-ad-1
+          failure-domain.beta.kubernetes.io/zone: ae-ad-1c
       spec:
-        accessModes: [ "ReadWriteOnce" ]
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: csi-disk
         resources:
           requests:
-            storage: 8Gi
+            storage: 10Gi
+
+#        annotations:
+#         volume.beta.kubernetes.io/storage-class: rocketmq-storage
+#      spec:
+#        accessModes: [ "ReadWriteOnce" ]
+#        resources:
+#          requests:
+#            storage: 8Gi
