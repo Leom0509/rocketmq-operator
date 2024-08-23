@@ -15,5 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-make deploy
+#make deploy
 
+kubectl create -f deploy/crds/rocketmq.apache.org_brokers.yaml
+kubectl create -f deploy/crds/rocketmq.apache.org_console.yaml
+kubectl create -f deploy/crds/rocketmq.apache.org_controllers.yaml
+kubectl create -f deploy/crds/rocketmq.apache.org_nameservices.yaml
+kubectl create -f deploy/crds/rocketmq.apache.org_topictransfer.yaml
+kubectl create -f deploy/service_account.yaml
+kubectl create -f deploy/role.yaml
+kubectl create -f deploy/role_binding.yaml
+kubectl create -f deploy/operator.yaml
