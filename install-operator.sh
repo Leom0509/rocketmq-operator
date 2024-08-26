@@ -18,10 +18,10 @@
 #make deploy
 
 kubectl create -f deploy/crds/rocketmq.apache.org_brokers.yaml
-kubectl create -f deploy/crds/rocketmq.apache.org_console.yaml
+kubectl create -f deploy/crds/rocketmq.apache.org_consoles.yaml
 kubectl create -f deploy/crds/rocketmq.apache.org_controllers.yaml
 kubectl create -f deploy/crds/rocketmq.apache.org_nameservices.yaml
-kubectl create -f deploy/crds/rocketmq.apache.org_topictransfer.yaml
+kubectl create -f deploy/crds/rocketmq.apache.org_topictransfers.yaml
 kubectl create -f deploy/service_account.yaml
 kubectl create -f deploy/role.yaml
 kubectl create -f deploy/role_binding.yaml

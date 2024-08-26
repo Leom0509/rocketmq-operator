@@ -24,7 +24,8 @@ spec:
   # size is the number of controllers.
   size: 1
   # controllerImage is the customized docker image repo of the RocketMQ Controller
-  controllerImage: apacherocketmq/rocketmq-nameserver:5.0.0-alpine-operator-0.4.0
+  #controllerImage: apacherocketmq/rocketmq-nameserver:5.0.0-alpine-operator-0.4.0
+  controllerImage: apacherocketmq/rocketmq-nameserver:4.5.0-alpine-operator-0.3.0
   # imagePullPolicy is the image pull policy
   imagePullPolicy: IfNotPresent
   # resources describes the compute resource requirements and limits

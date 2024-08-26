@@ -69,8 +69,8 @@ spec:
       labels:
         app: rocketmq-console
     spec:
-      nodeSelector:
-        superapp.test.workflow/component: middleware
+      #nodeSelector:
+        #superapp.test.workflow/component: middleware
       replicas: 1
       selector:
         matchLabels:

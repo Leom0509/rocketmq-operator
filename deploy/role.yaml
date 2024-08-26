@@ -19,6 +19,7 @@ kind: ClusterRole
 metadata:
   creationTimestamp: null
   name: rocketmq-operator
+  namespace: db
 rules:
 - apiGroups:
   - ""
