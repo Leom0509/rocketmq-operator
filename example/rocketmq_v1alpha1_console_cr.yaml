@@ -60,7 +60,7 @@ metadata:
   namespace: db
 spec:
   # nameServers is the [ip:port] list of name service
-  nameServers: "10.24.1.164:9876;10.24.1.195:9876;10.24.1.13:9876"
+  nameServers: "10.25.1.220:9876;10.25.1.135:9876;10.25.1.113:9876"
   # consoleDeployment define the console deployment
   consoleDeployment:
     apiVersion: apps/v1
@@ -70,7 +70,7 @@ spec:
         app: rocketmq-console
     spec:
       #nodeSelector:
-        #superapp.test.workflow/component: middleware
+        #superapp.prod2.workflow/component: middleware
       replicas: 1
       selector:
         matchLabels:

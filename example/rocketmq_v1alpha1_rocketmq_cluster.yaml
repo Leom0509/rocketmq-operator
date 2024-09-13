@@ -37,16 +37,23 @@ metadata:
   name: broker
   namespace: db
 spec:
+  nodeSelector:
+    superapp.prod2.workflow/component: middleware
+  tolerations:
+  - key: "superapp.prod2.workflow/component"
+    operator: "Equal"
+    value: "middleware"
+    effect: "NoSchedule"
   # size is the number of the broker cluster, each broker cluster contains a master broker and [replicaPerGroup] replica brokers.
-  size: 1
+  size: 2
   # nameServers is the [ip:port] list of name service
-  nameServers: ""
+  nameServers: "10.25.1.220:9876;10.25.1.135:9876;10.25.1.113:9876"
   # replicaPerGroup is the number of each broker cluster
   replicaPerGroup: 1
   # brokerImage is the customized docker image repo of the RocketMQ broker
   brokerImage: apacherocketmq/rocketmq-broker:4.5.0-alpine-operator-0.3.0
   # imagePullPolicy is the image pull policy
-  imagePullPolicy: Always
+  imagePullPolicy: IfNotPresent
   # resources describes the compute resource requirements and limits
   resources:
     requests:
@@ -97,7 +104,12 @@ metadata:
   namespace: db
 spec:
   nodeSelector:
-    superapp.test.workflow/component: middleware
+    superapp.prod2.workflow/component: middleware
+  tolerations:
+  - key: "superapp.prod2.workflow/component"
+    operator: "Equal"
+    value: "middleware"
+    effect: "NoSchedule"
   # size is the the name service instance number of the name service cluster
   size: 1
   # nameServiceImage is the customized docker image repo of the RocketMQ name service
@@ -151,7 +163,7 @@ metadata:
   namespace: db
 spec:
   # nameServers is the [ip:port] list of name service
-  nameServers: "10.24.1.164:9876;10.24.1.195:9876;10.24.1.13:9876"
+  nameServers: "10.25.1.220:9876;10.25.1.135:9876;10.25.1.113:9876"
   # consoleDeployment define the console deployment
   consoleDeployment:
     apiVersion: apps/v1

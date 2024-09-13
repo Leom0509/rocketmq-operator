@@ -37,11 +37,11 @@ metadata:
   namespace: db
 spec:
   nodeSelector:
-    superapp.test.workflow/component: middleware
+    superapp.prod2.workflow/component: middleware
   # size is the number of the broker cluster, each broker cluster contains a master broker and [replicaPerGroup] replica brokers.
   size: 1
   # nameServers is the [ip:port] list of name service
-  nameServers: "10.24.1.164:9876;10.24.1.195:9876;10.24.1.13:9876"
+  nameServers: "10.25.1.220:9876;10.25.1.135:9876;10.25.1.113:9876"
   # replicaPerGroup is the number of each broker cluster
   replicaPerGroup: 1
   # brokerImage is the customized docker image repo of the RocketMQ broker
